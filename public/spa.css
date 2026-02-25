@@ -1,0 +1,35 @@
+#calendrier {
+  width: 80%;
+  margin: 0 auto; /* center it */
+}
+
+
+#agendaView > table{
+    width: 100%;
+    min-height: 500px;
+    background: #0afc97;
+    
+}
+
+#agendaView .fc-agendaView-event-start,
+#agendaView .fc-agendaView-event-end{
+    width: 20%;
+}
+
+#agendaView .fc-agendaView-event-title{
+    width: 60%;
+}
+#agendaView th{
+    height: 30px;
+    font-size: 14px;
+    vertical-align: text-bottom;
+    font-weight: bold;
+    padding: 10px 0 0 10px;
+}
+
+#agendaView td{
+    height: 30px;
+    padding: 10px 0 0 10px;
+    font-size: 14px;
+    vertical-align: text-bottom;    
+}
