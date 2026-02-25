@@ -61,7 +61,7 @@ const m = date.getMonth();
 const y = date.getFullYear();
 
 const newEvent = {
-    title: 'NEW EVENT',
+    title: 'Nouveau événement',
     start: new Date(y, m, d, 10),
     end: new Date(y, m, d, 15),
     editable: true
