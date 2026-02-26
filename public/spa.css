@@ -4,7 +4,7 @@ body {
     text-align: center;
 }
 
-/* Boutons haut */
+/* Boutons SPA et Calendrier*/
 .top-buttons {
     margin: 20px;
 }
@@ -69,6 +69,7 @@ table {
     border-collapse: collapse;
 }
 
+
 th {
     background: black;
     color: white;
@@ -80,23 +81,31 @@ td {
     height: 60px;
 }
 
-/* Lignes types */
-.row-perm {
-    background: #1e88c8;
-    color: white;
+/* Change la couleur d'une colonne quand le curseur passe dessus*/
+td:hover{
+    background-color: aquamarine;
 }
 
-.row-stage {
-    background: #ff2e2e;
-    color: white;
-}
-
-.row-malade {
-    background: #9ed36a;
-}
 
 /* Week-end */
 .weekend {
     background: #e0e0e0;
     pointer-events: none;
 }   
+/* Vue Jour - colonne heure */
+.day-view-table {
+    width: 60%;
+}
+
+.col-heure {
+    width: 80px;
+    text-align: center;
+    font-weight: bold;
+    color: #555;
+    background: #798e9c;
+    border-right: 2px solid #ccc;
+}
+
+.col-heure:hover{
+    color: #f2c500;
+}
