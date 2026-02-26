@@ -1,123 +1,163 @@
-// mise en cache de l'objet jQuery pour le conteneur du calendrier (utilisé à plusieurs endroits ci-dessous)
-const $calendrier = $("#calendrier");
-// initialisation de FullCalendar sur l'élément avec toutes les options souhaitées
-$calendrier.fullCalendar({
-            header: {
-                left: ' today,prev,next,  title',
-                right: 'month,agendaWeek,agendaDay '
-            },
-            weekends: true,
-            allDaySlot: true,
-            droppable: true, 
-            eventAfterAllRender: function(view){
-                // exécuté une fois que le calendrier a terminé de dessiner tous les événements ;
-                // on l'utilise pour brancher des boutons personnalisés et gérer l'état de la vue agenda
+const calendar = document.getElementById("calendar");
 
-                const $header = $calendrier.find(".fc-header");
-                // déclencher la vue actuelle
-                $header.find('.fc-header-right').find('.fc-button').off('mouseup').on('mouseup', function(){
-                    if(!$(this).hasClass('fc-button-agendaView')){
-                        $calendrier.data("view", '');
-                    }
-                });
+let currentDate = new Date();
+let currentView = 'month'; // possible values: 'month', 'week', 'day'
 
-                if( $calendrier.data("view") != 'agendaView' ){
-                    $header.find(".fc-button-agendaView").removeClass('fc-state-active active');
-                    $("#agendaView").remove();
-                } else {
-                    renderAgendaView();
-                }
-            },
-            eventRender: function(event, e){
-                // déclenché pour chaque événement lorsqu'il est inséré dans le DOM ;
-                // ici on pourrait modifier l'élément ou capturer le nom de la vue actuelle
-                let currentView = $calendrier.fullCalendar('getView').name;
-            },
-            dayClick: function(date, jsEvent, view) {
-                // appelé lorsqu'une cellule de jour est cliquée ; les arguments fournissent la date et l'événement de clic
-            },
-            eventClick: function(calEvent, jsEvent, view) {
-                // déclenché lorsqu'un événement est cliqué ; `calEvent` contient toutes les propriétés de l'événement
-                console.log("===== eventClick =====");
-                console.log(calEvent);
-            }
-});
+function generateCalendar() {
+    // effacer le contenu existant
+    calendar.innerHTML = "";
 
-const headerRight = $calendrier.find(".fc-header").find(".fc-header-right");
+    if (currentView === 'month') {
+        generateMonthView();
+    } else if (currentView === 'week') {
+        generateWeekView();
+    } else if (currentView === 'day') {
+        generateDayView();
+    }
+}
 
-const agendaBtn = headerRight.find(".fc-corner-right").removeClass('fc-corner-right')
-                .clone().addClass('fc-corner-right fc-button-agendaView').removeClass('fc-button-agendaDay').text("agenda");
+function generateMonthView() {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
 
-agendaBtn.on('click', function(){
-    renderAgendaView();
-});
+    document.getElementById("currentMonth").innerText =
+        currentDate.toLocaleString("fr-FR", { month: "long", year: "numeric" });
 
-headerRight.find(".fc-header-space").before(agendaBtn);
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
 
-// Test de données d'événement
-const date = new Date();
-const d = date.getDate();
-const m = date.getMonth();
-const y = date.getFullYear();
+    let table = document.createElement("table");
+    let headerRow = document.createElement("tr");
+    const days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+    days.forEach(day => {
+        let th = document.createElement("th");
+        th.innerText = day;
+        headerRow.appendChild(th);
+    });
+    table.appendChild(headerRow);
 
-const newEvent = {
-    title: 'Nouveau événement',
-    start: new Date(y, m, d, 10),
-    end: new Date(y, m, d, 15),
-    editable: true
-};
+    let row = document.createElement("tr");
 
-// ajout d'un événement au calendrier
-const event = $calendrier.fullCalendar('renderEvent', newEvent, 'stick');
-
-
-function renderAgendaView(){
-
-    if($calendrier.fullCalendar('getView') != 'agendaView'){
-        $calendrier.fullCalendar('changeView', 'month');
-        const newView = $calendrier.fullCalendar('getView');
-        newView.name = 'agendaView';
-        $calendrier.fullCalendar('changeView', 'agendaView');
+    // calculer le nombre de cellules vides avant le premier jour (lundi=0)
+    const startIndex = (firstDay.getDay() + 6) % 7;
+    for (let i = 0; i < startIndex; i++) {
+        row.appendChild(document.createElement("td"));
     }
 
-    // mémoriser les événements actuels
-    const events = $calendrier.fullCalendar('clientEvents');
+    for (let day = 1; day <= lastDay.getDate(); day++) {
+        let cell = document.createElement("td");
+        cell.innerText = day;
 
-    // obtenir la date actuelle
-    const currentDate = $calendrier.fullCalendar('getDate');
+        let dayOfWeek = new Date(year, month, day).getDay();
+        if (dayOfWeek === 0 || dayOfWeek === 6) {
+            cell.classList.add("weekend");
+        }
+        row.appendChild(cell);
 
-    $calendrier.find(".fc-header").find(".fc-button-agendaView").siblings().removeClass('fc-state-active').end().addClass('fc-state-active');
-
-    $calendrier.data("view", 'agendaView');
-
-    const agendaViewHtml = document.createElement('div');
-    agendaViewHtml.setAttribute("id", "agendaView");
-
-    let contents = "<table>" + 
-        "<thead><tr>" +
-        "<th class='fc-widget-header fc-agendaView-event-start'>DateStart</th>" + 
-        "<th class='fc-widget-header fc-agendaView-event-end'>DateEnd</th>" + 
-        "<th class='fc-widget-header fc-agendaView-event-title'>Event</th>" +
-        "</tr></thead>" + 
-        "<tbody>";
-
-    for (const key in events) {
-        // détecter la plage de mois
-        const monthRange = moment().range(moment(currentDate).startOf('month'), moment(currentDate).endOf('month'));
-        const eventStart = moment(events[key].start).format("YYYY/MM/DD-H:mm:ss");
-        const eventEnd = moment(events[key].end).format("YYYY/MM/DD-H:mm:ss");
-
-        if(monthRange.contains(events[key].start) && monthRange.contains(events[key].end)){
-            const eventTitle = events[key].title;
-            contents += '<tr>' + 
-                '<td class="fc-widget-content">' + eventStart + '</td>' + 
-                '<td class="fc-widget-content">' + eventEnd + '</td>' + 
-                '<td class="fc-widget-content">' + eventTitle + '</td>' + 
-                '</tr>';
+        // chaque fois que l'on atteint dimanche, ajouter la ligne au tableau et en commencer une nouvelle
+        if (dayOfWeek === 0) {
+            table.appendChild(row);
+            row = document.createElement("tr");
         }
     }
 
-    contents += "</tbody></table>";
-    agendaViewHtml.innerHTML = contents;
-    $calendrier.find(".fc-content").html(agendaViewHtml);
+    table.appendChild(row);
+    calendar.appendChild(table);
 }
+
+function generateWeekView() {
+    // trouver le lundi de la semaine en cours
+    let tmp = new Date(currentDate);
+    let dow = tmp.getDay(); // 0=dim..6=sam
+    let diff = (dow + 6) % 7; // jours depuis lundi
+    let monday = new Date(tmp);
+    monday.setDate(tmp.getDate() - diff);
+
+    // en-tête avec la plage de dates
+    let end = new Date(monday);
+    end.setDate(monday.getDate() + 6);
+    document.getElementById("currentMonth").innerText =
+        "Semaine du " + monday.toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric' }) +
+        " au " + end.toLocaleDateString("fr-FR", { day: 'numeric', month: 'long', year: 'numeric' });
+
+    let table = document.createElement("table");
+    let headerRow = document.createElement("tr");
+    const days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+    days.forEach(day => {
+        let th = document.createElement("th");
+        th.innerText = day;
+        headerRow.appendChild(th);
+    });
+    table.appendChild(headerRow);
+
+    let row = document.createElement("tr");
+    for (let i = 0; i < 7; i++) {
+        let cell = document.createElement("td");
+        let d = new Date(monday);
+        d.setDate(monday.getDate() + i);
+        cell.innerText = d.getDate();
+        if (d.getDay() === 0 || d.getDay() === 6) {
+            cell.classList.add("weekend");
+        }
+        row.appendChild(cell);
+    }
+    table.appendChild(row);
+    calendar.appendChild(table);
+}
+
+function generateDayView() {
+    document.getElementById("currentMonth").innerText =
+        "Jour : " + currentDate.toLocaleDateString("fr-FR", { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+    let table = document.createElement("table");
+    let headerRow = document.createElement("tr");
+    const days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+    days.forEach(day => {
+        let th = document.createElement("th");
+        th.innerText = day;
+        headerRow.appendChild(th);
+    });
+    table.appendChild(headerRow);
+
+    let row = document.createElement("tr");
+    let cell = document.createElement("td");
+    cell.innerText = currentDate.getDate();
+    if (currentDate.getDay() === 0 || currentDate.getDay() === 6) {
+        cell.classList.add("weekend");
+    }
+    row.appendChild(cell);
+    table.appendChild(row);
+    calendar.appendChild(table);
+}
+document.getElementById("prevMonth").addEventListener("click", () => {
+    if (currentView === 'month') {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+    } else if (currentView === 'week') {
+        currentDate.setDate(currentDate.getDate() - 7);
+    } else if (currentView === 'day') {
+        currentDate.setDate(currentDate.getDate() - 1);
+    }
+    generateCalendar();
+});
+
+document.getElementById("nextMonth").addEventListener("click", () => {
+    if (currentView === 'month') {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+    } else if (currentView === 'week') {
+        currentDate.setDate(currentDate.getDate() + 7);
+    } else if (currentView === 'day') {
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+    generateCalendar();
+});
+
+// boutons de changement de vue (Mois / Semaine / Jour)
+document.querySelectorAll('.view-switch button').forEach(btn => {
+    btn.addEventListener('click', () => {
+        currentView = btn.dataset.view;
+        generateCalendar();
+    });
+});
+
+// rendu initial
+generateCalendar();

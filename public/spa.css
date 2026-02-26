@@ -1,35 +1,102 @@
-#calendrier {
-  width: 80%;
-  margin: 0 auto; /* center it */
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    text-align: center;
 }
 
-
-#agendaView > table{
-    width: 100%;
-    min-height: 500px;
-    background: #0afc97;
-    
+/* Boutons haut */
+.top-buttons {
+    margin: 20px;
 }
 
-#agendaView .fc-agendaView-event-start,
-#agendaView .fc-agendaView-event-end{
-    width: 20%;
+.top-buttons button {
+    padding: 10px 25px;
+    background: #1e88c8;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    margin: 5px;
+    cursor: pointer;
 }
 
-#agendaView .fc-agendaView-event-title{
-    width: 60%;
-}
-#agendaView th{
-    height: 30px;
-    font-size: 14px;
-    vertical-align: text-bottom;
+/* Titre */
+.title {
+    background: #f2c500;
+    font-size: 32px;
     font-weight: bold;
-    padding: 10px 0 0 10px;
+    padding: 20px;
+    margin: 20px auto;
+    width: 80%;
 }
 
-#agendaView td{
-    height: 30px;
-    padding: 10px 0 0 10px;
-    font-size: 14px;
-    vertical-align: text-bottom;    
+/* Switch */
+.view-switch button {
+    padding: 8px 20px;
+    margin: 5px;
+    background: #1e88c8;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
 }
+
+/* Navigation mois */
+.month-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+
+.month-navigation button {
+    font-size: 20px;
+    padding: 5px 15px;
+    cursor: pointer;
+}
+
+#currentMonth {
+    background: #1e88c8;
+    color: white;
+    padding: 10px 50px;
+    margin: 0 15px;
+    border-radius: 4px;
+}
+
+/* Tableau */
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+th {
+    background: black;
+    color: white;
+    padding: 10px;
+}
+
+td {
+    border: 1px solid #ccc;
+    height: 60px;
+}
+
+/* Lignes types */
+.row-perm {
+    background: #1e88c8;
+    color: white;
+}
+
+.row-stage {
+    background: #ff2e2e;
+    color: white;
+}
+
+.row-malade {
+    background: #9ed36a;
+}
+
+/* Week-end */
+.weekend {
+    background: #e0e0e0;
+    pointer-events: none;
+}   

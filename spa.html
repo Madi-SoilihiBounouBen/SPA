@@ -2,25 +2,39 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPA</title>
-
-    <!-- CSS dans le head -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css">
-    <link rel="stylesheet" href="public/spa.css">
+    <title>Calendrier SPA</title>
+    <link rel="stylesheet" href="/public/spa.css">
 </head>
 <body>
 
-    <div id="calendrier"></div>
+    <!-- Navigation -->
+    <div class="top-buttons">
+        <button id="btnSpa">SPA</button>
+        <button id="btnCalendrier">Calendrier</button>
+    </div>
 
-    <!-- 1. jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <!-- 2. Moment.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-    <!-- 3. FullCalendar -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
-    <!-- 4. Ton fichier -->
-    <script src="public/spa.js"></script>
+    <!-- Titre -->
+    <div class="title">
+        Calendrier SPA
+    </div>
 
+    <!-- Switch vue -->
+    <div class="view-switch">
+        <button data-view="month">Mois</button>
+        <button data-view="week">Semaine</button>
+        <button data-view="day" id="jour">Jour</button>
+    </div>
+
+    <!-- Navigation mois -->
+    <div class="month-navigation">
+        <button id="prevMonth">◀</button>
+        <div id="currentMonth">Février 2026</div>
+        <button id="nextMonth">▶</button>
+    </div>
+
+    <!-- Calendrier -->
+    <div id="calendar"></div>
+
+    <script src="/public/spa.js"></script>
 </body>
 </html>
