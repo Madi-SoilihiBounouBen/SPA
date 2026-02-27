@@ -54,12 +54,22 @@ body {
     cursor: pointer;
 }
 
+.month-navigation:hover button {
+    background: #6df200;
+    color: rgb(46, 112, 74);
+}
+
 #currentMonth {
     background: #1e88c8;
     color: white;
     padding: 10px 50px;
     margin: 0 15px;
     border-radius: 4px;
+}
+
+#currentMonth:hover {
+    background: #00f234;
+    color: black;
 }
 
 /* Tableau */
