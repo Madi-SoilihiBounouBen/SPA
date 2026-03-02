@@ -8,16 +8,17 @@ let currentView = 'month';
 
 // Fonction principale qui génère le calendrier selon la vue sélectionnée
 function generateCalendar() {
-    // Efface le contenu précédent du calendrier pour le régénérer
+
+    // vide le calendrier avant de le redessiner, pour éviter les doublons.
     calendar.innerHTML = "";
 
-    // Vérifie la vue sélectionnée et appelle la fonction appropriée
-    if (currentView === 'month') {
-        generateMonthView();
-    } else if (currentView === 'week') {
-        generateWeekView();
-    } else if (currentView === 'day') {
-        generateDayView();
+    /*Ensuite, redirige vers la bonne fonction selon la vue active (currentView). La fonction est appelée à chaque fois que l'utilisateur change de vue (mois / semaine / jour)*/
+    if (currentView === 'month') {//mois
+        generateMonthView(); // fonction qui génère la vue mensuelle du calendrier
+    } else if (currentView === 'week') { //semaine
+        generateWeekView(); // fonction qui génère la vue hebdomadaire du calendrier
+    } else if (currentView === 'day') { //jour
+        generateDayView(); // fonction qui génère la vue journalière du calendrier
     }
 }
 
@@ -189,14 +190,14 @@ function generateDayView() {
     headerRow.appendChild(thJour);
     table.appendChild(headerRow);
 
-    // Boucle sur les heures de 7h à 17h pour créer une ligne par heure
-    for (let h = 7; h <= 17; h++) {
+    // Affichages des heures de 7h à 19h
+    for (let h = 7; h <= 19; h++) {
         let row = document.createElement("tr");
 
         // Cellule affichant l'heure au format HH:00 (ex: "07:00", "17:00")
-        let tdHeure = document.createElement("td");
-        tdHeure.innerText = String(h).padStart(2, "0") + ":00";
-        tdHeure.classList.add("col-heure");
+        let tdHeure = document.createElement("td"); // Cellule pour l'heure horizontale
+        tdHeure.innerText = String(h).padStart(2, "0") + ":00";//convertit le nombre h en texte "string", puis le complète avec un zéro devant si nécessaire, et ajoute :00. Par exemple : 9 → "09:00", 14 → "14:00"
+        tdHeure.classList.add("col-heure"); //ajoute la classe CSS col-heure pour pouvoir styliser cette cellule (largeur, couleur, etc.).
 
         // Cellule vide pour saisir des événements
         let tdJour = document.createElement("td");

@@ -39,6 +39,10 @@ body {
     border-radius: 4px;
     cursor: pointer;
 }
+.view-switch button:hover {
+    background: #00eaf2;
+    color: black;
+}
 
 /* Navigation mois */
 .month-navigation {
@@ -81,7 +85,7 @@ table {
 
 
 th {
-    background: black;
+    background: rgb(0, 0, 0);
     color: white;
     padding: 10px;
 }
@@ -99,7 +103,7 @@ td:hover{
 
 /* Week-end */
 .weekend {
-    background: #e0e0e0;
+    background: #805b5b;
     pointer-events: none;
 }   
 /* Vue Jour - colonne heure */
