@@ -72,6 +72,10 @@ function generateMonthView() {
         if (dayOfWeek === 0 || dayOfWeek === 6) {
             cell.classList.add("weekend");
         }
+        // Si c'est le jour actuel, on met en évidence
+        if (year === currentDate.getFullYear() && month === currentDate.getMonth() && day === currentDate.getDate()) {
+            cell.classList.add("today");
+        }
         row.appendChild(cell);
 
         // Lorsqu'on arrive à dimanche, ajoute la ligne au tableau et commence une nouvelle
@@ -119,12 +123,19 @@ function generateWeekView() {
     thHeure.innerText = "Heure";
     thHeure.classList.add("col-heure");
     headerRow.appendChild(thHeure);
+    // index de la colonne du jour actuel (utilisé pour colorer les cellules plus bas)
+    let todayIndex = -1;
     // Boucle sur les 7 jours pour créer les en-têtes avec le nom du jour et sa date
     for (let i = 0; i < 7; i++) {
         let d = new Date(monday);
         d.setDate(monday.getDate() + i);
         let th = document.createElement("th");
         th.innerText = days[i] + " " + d.getDate();
+        // si c'est aujourd'hui, on ajoute une classe et on mémorise l'index
+        if (d.toDateString() === currentDate.toDateString()) {
+            th.classList.add("today");
+            todayIndex = i;
+        }
         headerRow.appendChild(th);
     }
     table.appendChild(headerRow);
@@ -147,6 +158,10 @@ function generateWeekView() {
             // Si c'est un week-end, ajoute la classe CSS "weekend"
             if (d.getDay() === 0 || d.getDay() === 6) {
                 cell.classList.add("weekend");
+            }
+            // colorer la colonne du jour actuel
+            if (i === todayIndex) {
+                cell.classList.add("today");
             }
             row.appendChild(cell);
         }
@@ -186,6 +201,8 @@ function generateDayView() {
     // Cellule d'en-tête pour la colonne du jour (ex: "Jeu 26")
     let thJour = document.createElement("th");
     thJour.innerText = dayLabel + " " + currentDate.getDate();
+    // met en surbrillance cette colonne (c'est toujours aujourd'hui en vue journalière)
+    thJour.classList.add("today");
     headerRow.appendChild(thHeure);
     headerRow.appendChild(thJour);
     table.appendChild(headerRow);
@@ -203,6 +220,8 @@ function generateDayView() {
         let tdJour = document.createElement("td");
         // Si c'est un week-end, colore la cellule différemment
         if (isWeekend) tdJour.classList.add("weekend");
+        // colonne actuelle
+        tdJour.classList.add("today");
 
         row.appendChild(tdHeure);
         row.appendChild(tdJour);

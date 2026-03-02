@@ -105,7 +105,17 @@ td:hover{
 .weekend {
     background: #805b5b;
     pointer-events: none;
-}   
+}
+
+/* Jour actuel */
+.today {
+    background: #3bf553;
+}
+/* le survol doit toujours changer la teinte sans trop écraser la couleur */
+td.today:hover, th.today:hover {
+    background: #ffecb3;
+}
+
 /* Vue Jour - colonne heure */
 .day-view-table {
     width: 60%;
