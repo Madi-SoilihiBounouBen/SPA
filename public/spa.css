@@ -90,6 +90,7 @@ th {
     padding: 10px;
 }
 
+
 td {
     border: 1px solid #ccc;
     height: 60px;
@@ -97,7 +98,7 @@ td {
 
 /* Change la couleur d'une colonne quand le curseur passe dessus*/
 td:hover{
-    background-color: aquamarine;
+    background-color: rgb(165, 24, 141);
 }
 
 
@@ -108,12 +109,12 @@ td:hover{
 }
 
 /* Jour actuel */
-.today {
+td.today {
     background: #3bf553;
 }
 /* le survol doit toujours changer la teinte sans trop écraser la couleur */
-td.today:hover, th.today:hover {
-    background: #ffecb3;
+td.today:hover{
+    background: #f0d688;
 }
 
 /* Vue Jour - colonne heure */
@@ -125,11 +126,13 @@ td.today:hover, th.today:hover {
     width: 80px;
     text-align: center;
     font-weight: bold;
-    color: #555;
-    background: #798e9c;
+    color: #240f0f;
+    background: #091bd7;
     border-right: 2px solid #ccc;
 }
 
-.col-heure:hover{
+td.col-heure:hover {
     color: #f2c500;
+    box-shadow: #00f234 0px 0px 10px;
+    border-radius: 25%;
 }
