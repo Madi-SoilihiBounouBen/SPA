@@ -1,8 +1,10 @@
 // Récupère l'élément HTML avec l'id "calendar" où le calendrier sera affiché
 const calendar = document.getElementById("calendar");
 
-// Initialise la date actuelle avec la date du jour
+// Initialise la date actuelle avec la date sélectionnée / affichée
 let currentDate = new Date();
+// On conserve aussi la date « naturelle » d'aujourd'hui qui ne change jamais
+const today = new Date();
 // Définit la vue actuelle du calendrier. Valeurs possibles: 'month' (mois), 'week' (semaine), 'day' (jour)
 let currentView = 'month';
 
@@ -84,9 +86,9 @@ function generateMonthView() {
             cell.classList.add("weekend"); // Si le jour de la semaine est dimanche (0) ou samedi (6), ajoute la classe "weekend" au CSS, à la cellule pour la styliser différemment (par exemple, en changeant la couleur de fond) afin de différencier les jours de week-end des jours de semaine dans le calendrier.
         }
 
-        // Si c'est le jour actuel, on met en évidence avec une couleur de fond différente.
-        if (year === currentDate.getFullYear() && month === currentDate.getMonth() && day === currentDate.getDate()) {
-            cell.classList.add("today"); // Si le jour actuel correspond à la date du jour (en comparant l'année, le mois et le jour), ajoute la classe "today" au CSS pour mettre en évidence cette cellule dans le calendrier (par exemple, en changeant la couleur de fond ou en ajoutant une bordure) afin que l'utilisateur puisse facilement identifier le jour actuel dans la vue mensuelle du calendrier.
+        // Si c'est le jour « réel » d'aujourd'hui, on met en évidence (ne pas se baser sur currentDate qui change lors de la navigation)
+        if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
+            cell.classList.add("today"); // Jour réel mis en évidence
         }
         
         row.appendChild(cell);
@@ -159,8 +161,8 @@ function generateWeekView() { // Génère la semaine en fonction de la date actu
         d.setDate(monday.getDate() + i);
         let th = document.createElement("th");
         th.innerText = days[i] + " " + d.getDate();
-        // si c'est aujourd'hui, on ajoute une classe et on mémorise l'index
-        if (d.toDateString() === currentDate.toDateString()) {
+        // si c'est le jour réel d'aujourd'hui, on ajoute une classe et on mémorise l'index
+        if (d.toDateString() === today.toDateString()) {
             th.classList.add("today");
             todayIndex = i;
         }
@@ -201,7 +203,7 @@ function generateWeekView() { // Génère la semaine en fonction de la date actu
 
 // Fonction qui génère la vue journalière du calendrier
 function generateDayView() {
-    // Affiche la date du jour en format français (ex: "Jour : lundi 26 février 2026")
+    // Affiche la date sélectionnée (currentDate) dans l'entête
     document.getElementById("currentMonth").innerText =
         "Jour : " + currentDate.toLocaleDateString("fr-FR", { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
@@ -229,8 +231,10 @@ function generateDayView() {
     // Cellule d'en-tête pour la colonne du jour (ex: "Jeu 26")
     let thJour = document.createElement("th");
     thJour.innerText = dayLabel + " " + currentDate.getDate();
-    // met en surbrillance cette colonne (c'est toujours aujourd'hui en vue journalière)
-    thJour.classList.add("today");
+    // met en surbrillance uniquement si la date correspond à aujourd'hui réel
+    if (currentDate.toDateString() === today.toDateString()) {
+        thJour.classList.add("today");
+    }
     headerRow.appendChild(thHeure);
     headerRow.appendChild(thJour);
     table.appendChild(headerRow);
@@ -248,8 +252,10 @@ function generateDayView() {
         let tdJour = document.createElement("td");
         // Si c'est un week-end, colore la cellule différemment
         if (isWeekend) tdJour.classList.add("weekend");
-        // colonne actuelle
-        tdJour.classList.add("today");
+        // colonne actuelle (seulement si c'est aujourd'hui réel)
+        if (currentDate.toDateString() === today.toDateString()) {
+            tdJour.classList.add("today");
+        }
 
         row.appendChild(tdHeure); // Ajoute la cellule de l'heure à la ligne du tableau
         row.appendChild(tdJour); // Ajoute la cellule du jour à la ligne du tableau
@@ -296,12 +302,15 @@ document.getElementById("nextMonth").addEventListener("click", () => {
 // Sélectionne tous les boutons de changement de vue et ajoute des événements au clic
 document.querySelectorAll('.view-switch button').forEach(btn => {
     btn.addEventListener('click', () => {
-        // addEventListener ajoute un événement de clic à chaque bouton de changement de vue (mois, semaine, jour) en utilisant la méthode querySelectorAll pour sélectionner tous les boutons à l'intérieur de l'élément avec la classe "view-switch". Lorsqu'un bouton est cliqué, une fonction fléchée est exécutée pour changer la vue du calendrier en fonction de l'attribut data-view du bouton cliqué. Par exemple, si le bouton cliqué a data-view="week", currentView sera mis à "week", ce qui déclenchera la génération de la vue hebdomadaire du calendrier lors de l'appel à generateCalendar().
-
         // Change la vue selon l'attribut data-view du bouton cliqué
-        currentView = btn.dataset.view; // currentView est mis à la valeur de l'attribut data-view du bouton cliqué en utilisant dataset.view. Cela permet de déterminer quelle vue du calendrier doit être affichée (mois, semaine ou jour) en fonction du bouton sur lequel l'utilisateur a cliqué. Par exemple, si le bouton cliqué a data-view="month", currentView sera mis à "month", ce qui déclenchera la génération de la vue mensuelle du calendrier lors de l'appel à generateCalendar().
+        currentView = btn.dataset.view;
 
-        generateCalendar(); // Regénère le calendrier pour afficher la nouvelle vue sélectionnée. Cette fonction est appelée à chaque fois que l'utilisateur clique sur un bouton de changement de vue pour mettre à jour l'affichage du calendrier en fonction de la vue choisie (mois, semaine ou jour).
+        // si on demande la vue jour, on veut s'assurer de retomber sur la date "réelle" du jour
+        if (currentView === 'day') {
+            currentDate = new Date();
+        }
+
+        generateCalendar(); // régénère avec la nouvelle vue (et éventuellement date restaurée)
     });
 });
 
