@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: #f2f2f2;
+    background: #07111c;
     text-align: center;
 }
 
@@ -21,7 +21,7 @@ body {
 
 /* Titre */
 .title {
-    background: #f2c500;
+    background: #3a930a;
     font-size: 32px;
     font-weight: bold;
     padding: 20px;
@@ -94,6 +94,7 @@ th {
 td {
     border: 1px solid #ccc;
     height: 60px;
+    color: #5d5252;
 }
 
 /* Change la couleur d'une colonne quand le curseur passe dessus*/
@@ -104,7 +105,7 @@ td:hover{
 
 /* Week-end */
 .weekend {
-    background: #805b5b;
+    background: #c88d8d;
     pointer-events: none;
 }
 
