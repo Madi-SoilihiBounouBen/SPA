@@ -11,9 +11,9 @@ body {
 
 .top-buttons button {
     padding: 10px 25px;
-    background: #1e88c8;
+    background: #0270b54c;
     border: none;
-    color: white;
+    color: #0270b5;
     border-radius: 6px;
     margin: 5px;
     cursor: pointer;
@@ -21,26 +21,28 @@ body {
 
 /* Titre */
 .title {
-    background: #3a930a;
+    background: #130d424b;
+    color: #1400ac;
     font-size: 32px;
     font-weight: bold;
     padding: 20px;
     margin: 20px auto;
     width: 80%;
+    border-radius: 7%;
 }
 
 /* Switch */
 .view-switch button {
     padding: 8px 20px;
     margin: 5px;
-    background: #1e88c8;
+    background: #1e87c84b;
     border: none;
-    color: white;
+    color: #1e88c8;
     border-radius: 4px;
     cursor: pointer;
 }
 .view-switch button:hover {
-    background: #00eaf2;
+    background: #1114c4;
     color: black;
 }
 
@@ -56,23 +58,24 @@ body {
     font-size: 20px;
     padding: 5px 15px;
     cursor: pointer;
+    background: #41545f4b;
 }
 
 .month-navigation:hover button {
-    background: #6df200;
+    background: #256b9332;
     color: rgb(46, 112, 74);
 }
 
 #currentMonth {
-    background: #1e88c8;
-    color: white;
+    background: #133a5357;
+    color: #133b53f9;
     padding: 10px 50px;
     margin: 0 15px;
     border-radius: 4px;
 }
 
 #currentMonth:hover {
-    background: #00f234;
+    background: #081c57;
     color: black;
 }
 
@@ -99,19 +102,21 @@ td {
 
 /* Change la couleur d'une colonne quand le curseur passe dessus*/
 td:hover{
-    background-color: rgb(165, 24, 141);
+    background-color: rgb(40, 11, 95);
 }
 
 
 /* Week-end */
 .weekend {
-    background: #c88d8d;
+    background: #d39f9fa4;
     pointer-events: none;
+    color: #fe9191;
 }
 
 /* Jour actuel */
 td.today {
-    background: #3bf553;
+    background: #00f21462;
+    color: #00f214;
 }
 /* le survol doit toujours changer la teinte sans trop écraser la couleur */
 td.today:hover{
