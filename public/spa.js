@@ -64,10 +64,10 @@ function generateMonthView() {
     let row = document.createElement("tr");
 
     // Calcule le nombre de cellules vides avant le premier jour du mois (lundi = 0)
-    const startIndex = (firstDay.getDay() + 6) % 7;
+    const startIndex = (firstDay.getDay() + 6) % 7; // % 7 est utilisé pour s'assurer que le résultat reste dans la plage de 0 à 6, ce qui correspond aux jours de la semaine. Par exemple, si firstDay.getDay() retourne 0 (dimanche), startIndex vaudra 6, ce qui signifie que le mois commence un dimanche et qu'il y aura 6 cellules vides avant d'afficher le premier jour du mois (lundi, mardi, mercredi, jeudi, vendredi, samedi). Si firstDay.getDay() retourne 1 (lundi), startIndex vaudra 0, ce qui signifie que le mois commence un lundi et qu'il n'y aura aucune cellule vide avant d'afficher le premier jour du mois.
 
     // Ajoute des cellules vides au début si le mois ne commence pas le lundi
-    for (let i = 0; i < startIndex; i++) { // Boucle pour ajouter des cellules vides avant le premier jour du mois.
+    for (let i = 0; i < startIndex; i++) { // Boucle pour ajouter des cellules vides avant le premier jour du mois. i++ signifie que la variable i est incrémentée de 1 à chaque itération de la boucle, ce qui permet de répéter l'ajout de cellules vides autant de fois que nécessaire en fonction de la valeur de startIndex. Par exemple, si startIndex est 3, la boucle s'exécutera 3 fois pour ajouter 3 cellules vides avant d'afficher le premier jour du mois.
 
         row.appendChild(document.createElement("td")); // Ajoute une cellule vide (td : table data) à la ligne du calendrier pour chaque jour avant le premier jour du mois. Par exemple, si le mois commence un mercredi, startIndex vaudra 2 (car mercredi est le troisième jour de la semaine en comptant à partir de lundi), et deux cellules vides seront ajoutées au début de la première ligne du calendrier pour représenter les jours de lundi et mardi qui ne font pas partie du mois affiché.
     }

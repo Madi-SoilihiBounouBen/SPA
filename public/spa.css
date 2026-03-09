@@ -4,9 +4,11 @@ body {
     text-align: center;
 }
 
-/* Boutons SPA et Calendrier*/
+/* Boutons SPA*/
 .top-buttons {
+    text-align: left;
     margin: 20px;
+    margin-left: 400px;
 }
 
 .top-buttons button {
@@ -14,7 +16,7 @@ body {
     background: #0270b54c;
     border: none;
     color: #0270b5;
-    border-radius: 6px;
+    border-radius: 0 20px 0 20px; /* Coins arrondis, en haut à gauche et en bas à droite pas d'arrondissement. En haut à droite et en bas à gauche arrondis de 20px */
     margin: 5px;
     cursor: pointer;
 }
@@ -31,11 +33,11 @@ body {
     border-radius: 7%;
 }
 
-/* Switch */
+/* Boutton Mois/Semaine/Jour   */
 .view-switch button {
     padding: 8px 20px;
     margin: 5px;
-    background: #1e87c84b;
+    background: #1e87c843;
     border: none;
     color: #1e88c8;
     border-radius: 4px;
@@ -68,7 +70,7 @@ body {
 
 #currentMonth {
     background: #133a5357;
-    color: #133b53f9;
+    color: #42525cf9;
     padding: 10px 50px;
     margin: 0 15px;
     border-radius: 4px;
